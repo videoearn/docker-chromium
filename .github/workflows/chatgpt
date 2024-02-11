@@ -1,0 +1,38 @@
+name: Build Docker Images
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build ARM64 Docker Image
+      if: matrix.os == 'ubuntu-latest'
+      run: docker build -t my_image_arm64 -f Dockerfile.aarch64 .
+
+    - name: Build AMD64 Docker Image
+      if: matrix.os == 'ubuntu-latest'
+      run: docker build -t my_image_amd64 -f Dockerfile .
+
+    - name: Push ARM64 Docker Image to Registry
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        docker push my_image_arm64
+
+    - name: Push AMD64 Docker Image to Registry
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        docker push my_image_amd64
