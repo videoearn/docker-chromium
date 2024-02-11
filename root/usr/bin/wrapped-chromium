@@ -15,6 +15,7 @@ if grep -q 'Seccomp:\t0' /proc/1/status; then
   --password-store=basic \
   --simulate-outdated-no-au='Tue, 31 Dec 2099 23:59:59 GMT' \
   --start-maximized \
+  --silent-debugger-extension-api \
   --user-data-dir \
    "$@" > /dev/null 2>&1
 else
@@ -25,6 +26,7 @@ else
   --password-store=basic \
   --simulate-outdated-no-au='Tue, 31 Dec 2099 23:59:59 GMT' \
   --start-maximized \
+  --silent-debugger-extension-api \
   --test-type \
   --user-data-dir \
    "$@" > /dev/null 2>&1
